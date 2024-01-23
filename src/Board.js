@@ -10,7 +10,7 @@ import "./Board.css";
  * - ncols: number of cols of board
  * - chanceLightStartsOn: float, chance any cell is lit at start of game
  *
- * State:
+ * States:
  *
  * - board: array-of-arrays of true/false
  *
@@ -28,12 +28,28 @@ import "./Board.css";
  **/
 
 function Board({ nrows, ncols, chanceLightStartsOn }) {
-  const [board, setBoard] = useState(createBoard());
+  const [board, setBoard] = useState(() => createBoard());
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   function createBoard() {
     let initialBoard = [];
-    // TODO: create array-of-arrays of true/false values
+    // TODO: create array-of-arrays of true/false values - DONE
+    for (let i = 0; i < nrows; i++) {
+      const row = [];
+      for (let j = 0; j < ncols; j++) {
+        // Generate a random number between 0 and 1
+        const randomValue = Math.random();
+
+        // Check if the random value is less than the probability 
+        const cellValue = randomValue < chanceLightStartsOn;
+
+        // Add the cell value to the row
+        row.push(cellValue);
+      }
+
+      // Add the row to the board
+      initialBoard.push(row);
+    }
     return initialBoard;
   }
 
@@ -71,9 +87,13 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
   // TODO
 
+  console.log(board);
+
   return (
     <div>
       <h2>Lights Out!</h2>
+      <Cell flipCellsAroundMe={flipCellsAround} isLit={true} />
+      
     </div>
   )
 }
