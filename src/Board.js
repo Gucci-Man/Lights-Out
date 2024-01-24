@@ -56,7 +56,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   function hasWon() {
     // TODO: check the board in state to determine whether the player has won. - DONE
     for (let i = 0; i < board.length; i++) {
-      if (i.includes(true)) {
+      if (board[i].includes(true)) {
         return false;
       }
     }
@@ -88,21 +88,29 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     });
   }
 
-  // if the game is won, just show a winning msg & render nothing else
+  // if the game is won, just show a winning msg & render nothing else - DONE
+  if (hasWon()) {
+    return (
+      <div>
+        <alert>You Won!</alert>
+      </div>
+    )
+  };
 
-  // TODO
-
-  // make table board
-
-  // TODO
-
-  console.log(board);
+  // make table board, need to fix board rows
+  const mappedBoard = board.map(innerBoard => {
+    return innerBoard.map((isLit, idx) => (
+      <Cell 
+        flipCellsAroundMe={flipCellsAround} 
+        isLit={isLit}
+        key={idx} 
+      />
+    ))
+  })
 
   return (
     <div>
-      <h2>Lights Out!</h2>
-      <Cell flipCellsAroundMe={flipCellsAround} isLit={true} />
-      
+      {mappedBoard}
     </div>
   )
 }
