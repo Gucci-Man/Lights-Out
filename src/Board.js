@@ -54,7 +54,13 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   }
 
   function hasWon() {
-    // TODO: check the board in state to determine whether the player has won.
+    // TODO: check the board in state to determine whether the player has won. - DONE
+    for (let i = 0; i < board.length; i++) {
+      if (i.includes(true)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   function flipCellsAround(coord) {
@@ -69,11 +75,14 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
         }
       };
 
-      // TODO: Make a (deep) copy of the oldBoard
+      // TODO: Make a (deep) copy of the oldBoard - DONE
+      const copyBoard = JSON.parse(JSON.stringify(oldBoard));
 
-      // TODO: in the copy, flip this cell and the cells around it
+      // TODO: in the copy, flip this cell and the cells around it - DONE
+      flipCell(y, x, copyBoard);
 
-      // TODO: return the copy
+      // TODO: return the copy - DONE
+      return copyBoard;
 
       
     });
