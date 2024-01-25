@@ -68,7 +68,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
       const [y, x] = coord.split("-").map(Number);
 
       const flipCell = (y, x, boardCopy) => {
-        // if this coord is actually on board, flip it
+        // If this coord is actually on board, flip it
 
         if (x >= 0 && x < ncols && y >= 0 && y < nrows) {
           boardCopy[y][x] = !boardCopy[y][x];
@@ -88,7 +88,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     });
   }
 
-  // if the game is won, just show a winning msg & render nothing else - DONE
+  // If the game is won, just show a winning msg & render nothing else - DONE
   if (hasWon()) {
     return (
       <div>
@@ -97,20 +97,30 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     )
   };
 
-  // make table board, need to fix board rows
-  const mappedBoard = board.map(innerBoard => {
-    return innerBoard.map((isLit, idx) => (
+  // Make table board
+  // Function to create a row of cells based on boolean values
+  const createRow = (row) => {
+    return row.map((isLit, idx) => (
       <Cell 
-        flipCellsAroundMe={flipCellsAround} 
+        flipCellsAroundMe={flipCellsAround}
         isLit={isLit}
-        key={idx} 
+        key={idx}
       />
-    ))
-  })
+    ));
+  };
+
+  // Function to create the board to display 
+  const displayBoard = (board) => {
+    return board.map((row, index) => (
+      <div key={index}>
+        {createRow(row)}
+      </div>
+    ));
+  };
 
   return (
     <div>
-      {mappedBoard}
+      {displayBoard(board)}
     </div>
   )
 }
