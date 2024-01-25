@@ -33,7 +33,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   function createBoard() {
     let initialBoard = [];
-    // TODO: create array-of-arrays of true/false values - DONE
+    // Create array-of-arrays of true/false values 
     for (let i = 0; i < nrows; i++) {
       const row = [];
       for (let j = 0; j < ncols; j++) {
@@ -54,7 +54,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   }
 
   function hasWon() {
-    // TODO: check the board in state to determine whether the player has won. - DONE
+    // Check the board in state to determine whether the player has won.
     for (let i = 0; i < board.length; i++) {
       if (board[i].includes(true)) {
         return false;
@@ -75,54 +75,57 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
         }
       };
 
-      // TODO: Make a (deep) copy of the oldBoard - DONE
-      const copyBoard = JSON.parse(JSON.stringify(oldBoard));
+      // Make a (deep) copy of the oldBoard
+      const boardCopy = JSON.parse(JSON.stringify(oldBoard));
 
-      // TODO: in the copy, flip this cell and the cells around it - DONE
-      flipCell(y, x, copyBoard);
+      // In the copy, flip this cell and the cells around it 
+      flipCell(y, x, boardCopy);
+      flipCell(y, x - 1, boardCopy);
+      flipCell(y, x + 1, boardCopy);
+      flipCell(y - 1, x, boardCopy);
+      flipCell(y + 1, x, boardCopy);
 
-      // TODO: return the copy - DONE
-      return copyBoard;
+      // Return the copy
+      return boardCopy;
 
       
     });
   }
 
-  // If the game is won, just show a winning msg & render nothing else - DONE
+  // If the game is won, just show a winning msg & render nothing else
   if (hasWon()) {
     return (
       <div>
-        <alert>You Won!</alert>
+        <h1>You Won!</h1>
       </div>
     )
   };
 
-  // Make table board
-  // Function to create a row of cells based on boolean values
-  const createRow = (row) => {
-    return row.map((isLit, idx) => (
-      <Cell 
-        flipCellsAroundMe={flipCellsAround}
-        isLit={isLit}
-        key={idx}
-      />
-    ));
-  };
+  // Make table board: rows of Cell components
 
-  // Function to create the board to display 
-  const displayBoard = (board) => {
-    return board.map((row, index) => (
-      <div key={index}>
-        {createRow(row)}
-      </div>
-    ));
-  };
+  let tblBoard = [];
+
+  for (let y = 0; y < nrows; y++) {
+    let row = [];
+    for (let x = 0; x < ncols; x++) {
+      let coord = `${y}-${x}`;
+      row.push(
+          <Cell
+              key={coord}
+              isLit={board[y][x]}
+              flipCellsAroundMe={() => flipCellsAround(coord)}
+          />,
+      );
+    }
+    tblBoard.push(<tr key={y}>{row}</tr>);
+  }
 
   return (
-    <div>
-      {displayBoard(board)}
-    </div>
-  )
+      <table className="Board">
+        <tbody>{tblBoard}</tbody>
+      </table>
+  );
+
 }
 
 export default Board;
